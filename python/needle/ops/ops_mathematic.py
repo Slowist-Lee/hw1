@@ -149,7 +149,7 @@ class Transpose(TensorOp):
         self.axes = axes
     def compute(self, a):
         ### BEGIN YOUR SOLUTION
-        new_dim=a.ndim
+        new_dim=list(range(a.ndim))
         if self.axes == None:
             new_dim[-1],new_dim[-2]=new_dim[-2],new_dim[-1]
         else:
