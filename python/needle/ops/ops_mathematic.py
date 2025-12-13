@@ -154,7 +154,7 @@ class Transpose(TensorOp):
             new_dim[-1],new_dim[-2]=new_dim[-2],new_dim[-1]
         else:
             new_dim[self.axes[0]],new_dim[self.axes[1]]=new_dim[self.axes[1]],new_dim[self.axes[0]]
-        return array_api.transpose(a,a.ndim)
+        return array_api.transpose(a,new_dim)
         ### END YOUR SOLUTION
 
     def gradient(self, out_grad, node):
