@@ -221,21 +221,38 @@ class Summation(TensorOp):
 
     def compute(self, a):
         ### BEGIN YOUR SOLUTION
-        return array_api.sum(a,self.axes,keepdims=True)
+        return array_api.sum(a,self.axes)
         ### END YOUR SOLUTION
-
     def gradient(self, out_grad, node):
         ### BEGIN YOUR SOLUTION
-        a=node.inputs[0]
-        # new_shape=list(out_grad.shape)
-        # if self.axes==None:
-        #     axes=range(len(a.shape))
-        # else:
-        #     axes=self.axes
-        # for i in axes:
-        #     new_shape[i]=1
-        return broadcast_to(out_grad,a.shape)
+        a = node.inputs[0]
+        # 需要先将 out_grad reshape 到正确的形状，然后再 broadcast
+        new_shape = list(a.shape)
+        if self.axes is None:
+            # 如果 axes 为 None，表示对所有维度求和，输出是标量
+            new_shape = [1] * len(a. shape)
+        else:
+            # 对指定的 axes 求和
+            axes = self.axes if isinstance(self.axes, tuple) else (self.axes,)
+            for axis in axes:
+                new_shape[axis] = 1
+        
+        # 先 reshape，再 broadcast
+        out_grad_reshaped = reshape(out_grad, new_shape)
+        return broadcast_to(out_grad_reshaped, a.shape)
         ### END YOUR SOLUTION
+    # def gradient(self, out_grad, node):
+    #     ### BEGIN YOUR SOLUTION
+    #     a=node.inputs[0]
+    #     # new_shape=list(out_grad.shape)
+    #     # if self.axes==None:
+    #     #     axes=range(len(a.shape))
+    #     # else:
+    #     #     axes=self.axes
+    #     # for i in axes:
+    #     #     new_shape[i]=1
+    #     return broadcast_to(out_grad,a.shape)
+    #     ### END YOUR SOLUTION
 
 
 def summation(a, axes=None):
