@@ -227,13 +227,13 @@ class Summation(TensorOp):
     def gradient(self, out_grad, node):
         ### BEGIN YOUR SOLUTION
         a=node.inputs[0]
-        new_shape=list(out_grad.shape)
-        if self.axes==None:
-            axes=range(len(a.shape))
-        else:
-            axes=self.axes
-        for i in axes:
-            new_shape[i]=1
+        # new_shape=list(out_grad.shape)
+        # if self.axes==None:
+        #     axes=range(len(a.shape))
+        # else:
+        #     axes=self.axes
+        # for i in axes:
+        #     new_shape[i]=1
         return broadcast_to(out_grad,a.shape)
         ### END YOUR SOLUTION
 
